@@ -59,4 +59,16 @@ class PostController extends Controller
 
         return response()->json($post);
     }
+
+    /**
+     * Show the form for editing the specified post.
+     */
+    public function edit(Post $post)
+    {
+        if (Auth::id() !== $post->user_id) {
+            abort(403, 'Unauthorized');
+        }
+
+        return 'posts.edit';
+    }
 }

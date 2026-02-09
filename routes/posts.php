@@ -15,4 +15,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/posts/{post}', [PostController::class, 'show'])
         ->name('posts.show');
+
+    Route::get('/posts/{post}/edit', [PostController::class, 'edit'])
+        ->name('posts.edit');
 });
