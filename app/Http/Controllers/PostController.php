@@ -71,4 +71,25 @@ class PostController extends Controller
 
         return 'posts.edit';
     }
+
+    /**
+     * Update the specified post in storage.
+     */
+    public function update(Request $request, Post $post)
+    {
+        if (Auth::id() !== $post->user_id) {
+            abort(403, 'Unauthorized');
+        }
+
+        $validated = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'content' => ['required', 'string'],
+            'is_draft' => ['boolean'],
+            'published_at' => ['nullable', 'date'],
+        ]);
+
+        $post->update($validated);
+
+        return response()->json($post);
+    }
 }

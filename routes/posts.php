@@ -18,4 +18,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/posts/{post}/edit', [PostController::class, 'edit'])
         ->name('posts.edit');
+
+    Route::put('/posts/{post}', [PostController::class, 'update'])
+        ->name('posts.update');
 });
