@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -51,7 +54,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        if ($post->is_draft || ($post->published_at && $post->published_at->isFuture())) {
+        if ($post->is_draft || ($post->published_at && Carbon::parse($post->published_at)->isFuture())) {
             abort(404);
         }
 
