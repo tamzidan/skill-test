@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 | Home
 |--------------------------------------------------------------------------
-| Views are not required for this skill test, so we keep this minimal.
 */
 Route::get('/', function () {
     return 'OK';
@@ -15,30 +14,24 @@ Route::get('/', function () {
 
 /*
 |--------------------------------------------------------------------------
-| Public Post Routes
+| Post Routes
 |--------------------------------------------------------------------------
-| Only published (active) posts
 */
 Route::get('/posts', [PostController::class, 'index'])
     ->name('posts.index');
 
-Route::get('/posts/{post}', [PostController::class, 'show'])
-    ->name('posts.show');
-
-/*
-|--------------------------------------------------------------------------
-| Protected Post Routes
-|--------------------------------------------------------------------------
-| Authenticated users only
-*/
 Route::middleware(['auth', 'verified'])->group(function () {
-
     Route::get('/posts/create', [PostController::class, 'create'])
         ->name('posts.create');
 
     Route::post('/posts', [PostController::class, 'store'])
         ->name('posts.store');
+});
 
+Route::get('/posts/{post}', [PostController::class, 'show'])
+    ->name('posts.show');
+
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/posts/{post}/edit', [PostController::class, 'edit'])
         ->name('posts.edit');
 

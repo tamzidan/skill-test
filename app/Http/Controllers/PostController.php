@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -54,7 +53,8 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        if ($post->is_draft || ($post->published_at && Carbon::parse($post->published_at)->isFuture())) {
+        // Return 404 if post is draft or scheduled for future
+        if ($post->is_draft || ($post->published_at && $post->published_at->isFuture())) {
             abort(404);
         }
 
@@ -68,6 +68,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        // Only post author can access
         if (Auth::id() !== $post->user_id) {
             abort(403, 'Unauthorized');
         }
@@ -80,6 +81,7 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+        // Only post author can update
         if (Auth::id() !== $post->user_id) {
             abort(403, 'Unauthorized');
         }
@@ -101,6 +103,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        // Only post author can delete
         if (Auth::id() !== $post->user_id) {
             abort(403, 'Unauthorized');
         }
